@@ -22,6 +22,7 @@ function start() {
 function finnahlidrun(adgerd){
   let n = prompt('Hversu mikið á að hliðra?');
   if(1 <= n && n <= 31){
+    n = Number.parseInt(n, 10);
     finnaStreng(adgerd, n);
   }
 }
@@ -30,8 +31,12 @@ function finnaStreng(adgerd, n){
   let strengur = prompt('Sláðu inn streng');
   strengur = strengur.toLocaleUpperCase();
   let nidurstada;
-  if(adgerd === 'kóða') nidurstada = encode(strengur, n);
-  else if(adgerd === 'afkóða') nidurstada = decode(strengur, n);
+  if(adgerd === 'kóða'){
+    nidurstada = encode(strengur, n);
+  }
+  else if(adgerd === 'afkóða') {
+    nidurstada = decode(strengur, n);
+  }
   alert(nidurstada);
   aftur();
 }
