@@ -7,8 +7,38 @@ const LETTERS = `AÁBDÐEÉFGHIÍJKLMNOÓPRSTUÚVXYÝÞÆÖ`;
 /**
  * Byrja forrit.
  */
+const fylki = Array.from(LETTERS);
+
 function start() {
-  alert('Halló!')
+  let utkoma = prompt('Viltu kóða eða afkóða\nSkrifaður kóða eða afkóða.');
+  if(utkoma === 'kóða' || utkoma === 'afkóða'){
+    finnahlidrun(utkoma);
+  }
+  /*else{
+    //ekki skrifað rétt
+  }*/
+}
+
+function finnahlidrun(adgerd){
+  let n = prompt('Hversu mikið á að hliðra?');
+  if(1 <= n && n <= 31){
+    finnaStreng(adgerd, n);
+  }
+}
+
+function finnaStreng(adgerd, n){
+  let strengur = prompt('Sláðu inn streng');
+  strengur = strengur.toLocaleUpperCase();
+  let nidurstada;
+  if(adgerd === 'kóða') nidurstada = encode(strengur, n);
+  else if(adgerd === 'afkóða') nidurstada = decode(strengur, n);
+  alert(nidurstada);
+  aftur();
+}
+
+function aftur() {
+  let aftur = confirm('Viltu gera aftur?');
+  if(aftur) start();
 }
 
 // Hér er gott að commenta út til að vinna í encode/decode föllum fyrst og síðan „viðmóti“ forrits
@@ -22,6 +52,25 @@ start();
  * @returns {string} Upprunalegi strengurinn hliðraður um n til hægri
  */
 function encode(str, n) {
+  let lokastrengur = "";
+
+  for(var i = 0; i < str.length; i++){
+    stafur = str.charAt(i);
+    for(var j = 0; j < fylki.length; j++){
+      if(stafur == fylki[j]){
+        if (j+n<fylki.length){
+          let nyrstafur = fylki[j + n];
+          lokastrengur = lokastrengur + nyrstafur;
+        }
+        else{
+          let nyrstafur = fylki[(j+n)%32];
+          lokastrengur = lokastrengur + nyrstafur;
+        }
+        break;
+      }
+    }
+  }
+  str = lokastrengur;
   return str;
 }
 
@@ -33,6 +82,25 @@ function encode(str, n) {
  * @returns {string} Upprunalegi strengurinn hliðraður um n til vinstri
  */
 function decode(str, n) {
+  let lokastrengur = "";
+
+  for(var i = 0; i < str.length; i++){
+    stafur = str.charAt(i);
+    for(var j = 0; j < fylki.length; j++){
+      if(stafur == fylki[j]){
+        if (j-n>0){
+          let nyrstafur = fylki[j - n];
+          lokastrengur = lokastrengur + nyrstafur;
+        }
+        else{
+          let nyrstafur = fylki[(j-n+32)%32];
+          lokastrengur = lokastrengur + nyrstafur;
+        }
+        break;
+      }
+    }
+  }
+  str = lokastrengur;
   return str;
 }
 
